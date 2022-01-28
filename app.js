@@ -1,8 +1,3 @@
-// select modal-btn,modal-overlay,close-btn
-// listen for click events on modal-btn and close-btn
-// when user clicks modal-btn add .open-modal to modal-overlay
-// when user clicks close-btn remove .open-modal from modal-overlay
-const number = [0,1,2,3,4,5,6,7,8,9];
 const luckeyMoney = [1, 5, 10, 20, 30, 40, 50];
 
 const modalBtn = document.querySelector(".modal-btn");
@@ -10,18 +5,34 @@ const modal = document.querySelector(".modal-overlay");
 const closeBtn = document.querySelector(".close-btn");
 const transaction = document.querySelector(".transaction");
 
+
 modalBtn.addEventListener("click", function () {
-  const randomMoney = Math.floor(Math.random() * luckeyMoney.length);
-  let ID = "";
-  for(let i = 0;  i < 8; i++){
-    const radomID = Math.floor(Math.random() * number.length);
-    ID += number[radomID];
-  }
-  console.log(ID);
+  const random = Math.floor(Math.random() * luckeyMoney.length);
+  const money = luckeyMoney[random];
+  const date = new Date() ;
+  const ID = date.getSeconds()+"/"+date.getMinutes()+"/"+date.getHours()+"/"+date.getDate()+"/"+(date.getMonth()+1)+"/"+date.getFullYear();
+
   modal.classList.add("open-modal");
-  transaction.innerHTML = `<p>$ ${luckeyMoney[randomMoney]}k</p><span>ID: ${ID}</span>`;
+  transaction.innerHTML = `<p>$ ${luckeyMoney[random]}k</p><span>ID: ${ID}</span>`;
+  
+  // add data
+  const name = document.getElementById("name");
+  addToLocalStorage(ID, name.value, money);
 });
 closeBtn.addEventListener("click", function () {
   modal.classList.remove("open-modal");
 });
 
+// local storage
+function addToLocalStorage(id, name, money){
+  const grocery = {id, name, money};
+  items = getLocalStorage();
+  items.push(grocery);
+  localStorage.setItem("list", JSON.stringify(items));
+}
+
+function getLocalStorage() {
+  return localStorage.getItem("list")
+    ? JSON.parse(localStorage.getItem("list"))
+    : [];
+}
