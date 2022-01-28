@@ -17,15 +17,16 @@ modalBtn.addEventListener("click", function () {
   
   // add data
   const name = document.getElementById("name");
-  addToLocalStorage(ID, name.value, money);
+  const sendMoney = luckeyMoney[Math.floor(Math.random() * luckeyMoney.length)];
+  addToLocalStorage(ID, name.value, money, sendMoney);
 });
 closeBtn.addEventListener("click", function () {
   modal.classList.remove("open-modal");
 });
 
 // local storage
-function addToLocalStorage(id, name, money){
-  const grocery = {id, name, money};
+function addToLocalStorage(id, name, money, sendMoney){
+  const grocery = {id, name, money, sendMoney};
   items = getLocalStorage();
   items.push(grocery);
   localStorage.setItem("list", JSON.stringify(items));
